@@ -1,29 +1,35 @@
-# fly.toml app configuration file generated for tailwings on 2023-05-23T23:44:58+02:00
+# fly.toml app configuration file generated for tailwings-app on 2024-04-13T14:39:54Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "tailwings"
-primary_region = "cdg"
-kill_signal = "SIGINT"
-kill_timeout = 5
+app = 'tailwings-app'
+primary_region = 'cdg'
+kill_signal = 'SIGINT'
+kill_timeout = '5s'
 
 [build]
-  image = "ghcr.io/tailscale/tailscale:latest"
+  image = 'ghcr.io/tailscale/tailscale:latest'
 
 [env]
-  TS_EXTRA_ARGS = "--advertise-tags=tag:tailwings --advertise-exit-node"
-  TS_HOSTNAME = "fly-${FLY_REGION}"
-  TS_TAILSCALED_EXTRA_ARGS = "--port 41641 --state=mem:"
+  TS_EXTRA_ARGS = '--advertise-tags=tag:tailwings --advertise-exit-node'
+  TS_HOSTNAME = 'fly-${FLY_REGION}'
+  TS_TAILSCALED_EXTRA_ARGS = '--port 41641 --state=mem:'
 
 [[services]]
-  protocol = "udp"
+  protocol = 'udp'
   internal_port = 41641
-  processes = ["app"]
+  processes = ['app']
 
-  [[services.ports]]
+[[services.ports]]
     port = 41641
+
   [services.concurrency]
-    type = "connections"
+    type = 'connections'
     hard_limit = 100
     soft_limit = 75
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
