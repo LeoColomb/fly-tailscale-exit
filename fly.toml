@@ -4,15 +4,17 @@
 #
 
 app = "tailwings"
-primary_region = "nrt"
+primary_region = "cdg"
 kill_signal = "SIGINT"
-kill_timeout = "5s"
+kill_timeout = 5
+
+[build]
+  image = "ghcr.io/tailscale/tailscale:latest"
 
 [env]
-  PORT = "41641"
-  # create a reusable auth key and set it:
-  # flyctl secrets set TAILSCALE_AUTH_KEY=tskey-...
-  # ephemeral keys are hardly working for use as exit node as they are ipv6 only
+  TS_EXTRA_ARGS = "--advertise-tags=tag:tailwings --advertise-exit-node"
+  TS_HOSTNAME = "fly-${FLY_REGION}"
+  TS_TAILSCALED_EXTRA_ARGS = "--port 41641 --state=mem:"
 
 [[services]]
   protocol = "udp"
